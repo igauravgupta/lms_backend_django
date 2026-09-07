@@ -7,8 +7,31 @@ authors = [
     { name = "Gaurav Gupta", email = "gaurav33dev@gmail.com" }
 ]
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "django>=6.1.1",
+    "python-decouple>=3.8",
+]
 
 [build-system]
 requires = ["uv_build>=0.12.10,<0.13.0"]
 build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.12.0",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py314"
+exclude = [
+    ".venv",
+    "migrations",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "DJ"]
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
