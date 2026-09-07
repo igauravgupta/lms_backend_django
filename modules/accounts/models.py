@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Group, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils import timezone
 from modules.accounts.constants import Constants
 
@@ -83,12 +83,4 @@ class User(AbstractBaseUser, PermissionsMixin):
         """Return the user's email address as the display string."""
         return self.email
 
-    def save(self, *args, **kwargs):
-        """Save the user and assign the group matching the user's role."""
-        super().save(*args, **kwargs)
-        role_group, _ = Group.objects.get_or_create(
-            name=f"{ROLE_GROUP_PREFIX}{self.role}"
-        )
-        # Assign the user to the group corresponding to their role, remove them from other role groups if they exist
-        self.groups.set([role_group])
 
