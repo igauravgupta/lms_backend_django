@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 
 User = get_user_model()
 
@@ -8,10 +9,8 @@ User = get_user_model()
 class AccountAdmin(admin.ModelAdmin):
     """Admin configuration for the custom User (Account) model.
 
-    Provides a list view with key user attributes, search and filter
-    capabilities, and bulk actions for activating/deactivating users.
-    Sensitive/auto-managed fields (timestamps, password reset tokens)
-    are exposed as read-only.
+    Provides a list view with key user attributes, search and filter capabilities, and bulk actions for activating/deactivating users.
+    Sensitive/auto-managed fields (timestamps, password reset tokens) are exposed as read-only.
     """
 
     list_display = ('id', 'email', 'full_name', 'mobile', 'is_active', 'is_staff', 'is_superuser', 'role')
@@ -23,13 +22,13 @@ class AccountAdmin(admin.ModelAdmin):
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name', 'mobile', 'profession', 'profile_image')}),
         ('Roles & Permissions', {
-            'fields': ('role', 'is_active', 'is_staff', 'is_superuser', 'is_blocked', 'groups', 'user_permissions')
+            'fields': ('role', 'is_active', 'is_staff', 'is_superuser', 'is_blocked', 'groups')
         }),
         ('Important dates', {'fields': ('last_login', 'created_at', 'updated_at')}),
     )
     actions = ('activate_users', 'deactivate_users')
     # helps to display the many-to-many fields in a more user-friendly way in the admin interface while viewing or editing a User instance. It provides a dual list box interface where you can select and move items between the available and selected lists.
-    filter_horizontal = ('groups', 'user_permissions')
+    filter_horizontal = ['groups']
 
     @admin.action(description='Activate selected users')
     def activate_users(self, request, queryset):
