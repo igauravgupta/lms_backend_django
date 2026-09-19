@@ -23,6 +23,10 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
+    # API versioning settings -- allows us to support multiple versions of the API simultaneously (e.g. v1, v2) and route requests to the appropriate view/serializer based on the version in the URL.
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
+    'DEFAULT_VERSION': 'v1',
+    'ALLOWED_VERSIONS': ['v1', 'v2'],
 }
 
 MIDDLEWARE = [
